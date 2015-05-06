@@ -17,7 +17,8 @@ void GALDataManager::mouseMove(QMouseEvent *e) {
 }
 
 void GALDataManager::paint(QPainter &painter) {
-    painter.drawText(0, 0, 1080, 60, Qt::AlignHCenter, status);
+    painter.setFont(QFont("default", 30, -1, false));
+    painter.drawText(0, 40, 1080, 60, Qt::AlignHCenter, status);
     painter.setFont(QFont("default", 15, -1, false));
     for (int i = 0; i < 6; i ++) {
         if (i == focus) {

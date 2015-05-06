@@ -17,6 +17,8 @@
 #include "galbottombar.h"
 #include "galdatamanager.h"
 #include "galscenepainter.h"
+#include "galselect.h"
+
 using namespace std;
 class GALScene
 {
@@ -37,6 +39,7 @@ private:
     GALBottomBar galBottomBar;
     GALDataManager galDataManager;
     GALScenePainter galScenePainter;
+    GALSelect galSelect;
 
     map<QString, int> charPos;
     map<QString, QImage> charImg;

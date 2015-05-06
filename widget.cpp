@@ -14,7 +14,7 @@ Widget::Widget(QWidget *parent) :
     timer->start(16);
     elapsed = 0;
     setMouseTracking(true);
-    galScene.jumpToScript("000");
+    galScene.jumpToScript("0.0.0");
 }
 
 Widget::~Widget()

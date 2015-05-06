@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     galbgm.cpp \
     galbottombar.cpp \
     galdatamanager.cpp \
-    galscenepainter.cpp
+    galscenepainter.cpp \
+    galselect.cpp
 
 HEADERS  += widget.h \
     galscene.h \
@@ -29,7 +30,8 @@ HEADERS  += widget.h \
     galbgm.h \
     galbottombar.h \
     galdatamanager.h \
-    galscenepainter.h
+    galscenepainter.h \
+    galselect.h
 
 FORMS    += widget.ui
 

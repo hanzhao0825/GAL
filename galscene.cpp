@@ -7,7 +7,7 @@ GALScene::GALScene() {
     MUSTWAIT = 0;
     curPath = QApplication::applicationDirPath();
     voice = new QSound("");
-    state = "GalScene";
+    state = "GALSCENE";
 }
 
 GALScene::~GALScene() {
@@ -19,24 +19,26 @@ void GALScene::paint(QPainter& painter) {
     galScenePainter.paint(painter, 0, 0, 1, galStatus, charImg, scene);
     galTextBoard.paint(painter);
     galBottomBar.paint(painter);
-    if (state == "Load" || state == "Save")
+    if (state == "LOAD" || state == "SAVE")
         galDataManager.paint(painter);
+    if (state == "SELECT")
+        galSelect.paint(painter);
 }
 
 void GALScene::mousePress(QMouseEvent *e) {
-    qDebug() << "mousePress";
+//    qDebug() << "mousePress";
     if (MUSTWAIT) return;
-    if (state == "GalScene") {
+    if (state == "GALSCENE") {
         if (galBottomBar.focus != -1) {
             switch (galBottomBar.focus) {
                 case 0:
-                    state = "Load";
-                    galDataManager.status = "Load";
+                    state = "LOAD";
+                    galDataManager.status = "LOAD";
                     galDataManager.refresh();
                     break;
                 case 1:
-                    state = "Save";
-                    galDataManager.status = "Save";
+                    state = "SAVE";
+                    galDataManager.status = "SAVE";
                     galDataManager.refresh();
                     break;
             }
@@ -47,31 +49,36 @@ void GALScene::mousePress(QMouseEvent *e) {
             return;
         }
         nextActions();
-    } else if (state == "Load" || state == "Save") {
+    } else if (state == "LOAD" || state == "SAVE") {
         if (galDataManager.focus == -1) {
-            state = "GalScene";
+            state = "GALSCENE";
         } else {
             QString fname = "./data/"+QString::number(galDataManager.focus, 10);
-            if (state == "Load") {
+            if (state == "LOAD") {
                 galStatus.loadFrom(fname);
                 jumpToScript(galStatus.fname, galStatus.lineNum);
-            } else if (state == "Save") {
+            } else if (state == "SAVE") {
                 galStatus.saveTo(fname);
             }
             galDataManager.refresh();
         }
+    } else if (state == "SELECT") {
+        if (galSelect.focus == -1) return;
+        state = "GALSCENE";
+        jumpToScript(galSelect.fname[galSelect.focus]);
     }
 }
 
 void GALScene::mouseMove(QMouseEvent *e) {
     galBottomBar.mouseMove(e);
     galDataManager.mouseMove(e);
+    galSelect.mouseMove(e);
 }
 
 void GALScene::jumpToScript(QString fname) {
     galStatus.fname = fname;
     galStatus.lineNum = 0;
-    galStatus.curChar.clear();
+//    galStatus.curChar.clear();
     file.close();
     file.setFileName(curPath+"/res/gal/script/"+fname+".txt");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -109,15 +116,21 @@ QStringList GALScene::getAnotherLine() {
 void GALScene::nextActions() {
     while (1) {
         QStringList strList = getAnotherLine();
-        qDebug() << strList;
+//        qDebug() << strList;
         galStatus.lineNum ++;
         if (strList[0] == "TEXT") {
             galStatus.lastWords = strList[2];
             if (strList[1] == "X") {
-                galTextBoard.changeStr(strList[2], "");
+                QString qs = "";
+                for (int i = 2; i < strList.length(); i ++)
+                    qs += strList[i]+" ";
+                galTextBoard.changeStr(qs, "");
             } else  {
-                galTextBoard.changeStr(strList[2], strList[1]);
-                if (strList[3] != "X") {
+                QString qs = "";
+                for (int i = 3; i < strList.length(); i ++)
+                    qs += strList[i]+" ";
+                galTextBoard.changeStr(qs, strList[1]);
+                if (strList[2] != "X") {
                     delete voice;
                     voice = new QSound("./res/GAL/voice/"+galStatus.fname+"/"+strList[3]+".wav");
                     voice->play();
@@ -142,6 +155,16 @@ void GALScene::nextActions() {
             }
         } else if (strList[0] == "GOTO") {
             jumpToScript(strList[1]);
+            break;
+        } else if (strList[0] == "SELECT") {
+            int cs = strList[1].toInt();
+            vector<QString> t, f;
+            vector<int> v;
+            for (int i = 2; i < 2 + cs; i ++) t.push_back(strList[i]);
+            for (int i = 2+cs; i < 2 + cs+cs; i ++) f.push_back(strList[i]);
+            for (int i = 2+cs+cs; i < 2 + cs+cs+cs; i ++) v.push_back(strList[i].toInt());
+            galSelect.change(cs, t, f, v);
+            state = "SELECT";
             break;
         }
     }

@@ -13,7 +13,7 @@ GALStatus::~GALStatus()
 
 
 void GALStatus::saveTo(QString fname) {
-    qDebug() << "Saving To " << fname;
+//    qDebug() << "Saving To " << fname;
     QFile f(fname);
     f.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream fout(&f);
@@ -33,7 +33,7 @@ void GALStatus::saveTo(QString fname) {
 }
 
 void GALStatus::loadFrom(QString fname) {
-    qDebug() << "Loading from " << fname;
+//    qDebug() << "Loading from " << fname;
     QFile f(fname);
     if (! f.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Cannot open file";
