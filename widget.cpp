@@ -13,7 +13,7 @@ Widget::Widget(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
     timer->start(16);
     elapsed = 0;
-
+    setMouseTracking(true);
     galScene.jumpToScript("000");
 }
 
@@ -41,6 +41,11 @@ void Widget::paintEvent(QPaintEvent *event)
 void Widget::mousePressEvent(QMouseEvent *e)
 {
    galScene.mousePress(e);
+}
+
+void Widget::mouseMoveEvent(QMouseEvent *e)
+{
+    galScene.mouseMove(e);
 }
 
 void Widget::keyPressEvent(QKeyEvent *e)

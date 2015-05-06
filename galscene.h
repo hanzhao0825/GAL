@@ -14,7 +14,9 @@
 #include "galtextboard.h"
 #include "galstatus.h"
 #include "galbgm.h"
-
+#include "galbottombar.h"
+#include "galdatamanager.h"
+#include "galscenepainter.h"
 using namespace std;
 class GALScene
 {
@@ -23,6 +25,7 @@ public:
     ~GALScene();
     void paint(QPainter &painter);
     void mousePress(QMouseEvent *e);
+    void mouseMove(QMouseEvent *e);
     void keyPress(QKeyEvent *e);
     void jumpToScript(QString fname);
     void jumpToScript(QString fname, int lineNum);
@@ -31,7 +34,13 @@ private:
     GALStatus galStatus;
     GALTextBoard galTextBoard;
     GALBGM galBGM;
+    GALBottomBar galBottomBar;
+    GALDataManager galDataManager;
+    GALScenePainter galScenePainter;
+
     map<QString, int> charPos;
+    map<QString, QImage> charImg;
+    QImage scene;
     QFile file;
     QStringList getAnotherLine();
     bool MUSTWAIT;
@@ -40,6 +49,9 @@ private:
     QString curPath;
     void saveTo(QString fname);
     void loadFrom(QString fname);
+
+    QString state;
+
 };
 
 #endif // GALSCENE_H

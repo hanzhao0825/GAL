@@ -28,6 +28,7 @@ public slots:
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
     void keyPressEvent(QKeyEvent *);
 };
 

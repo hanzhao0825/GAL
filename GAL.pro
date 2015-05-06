@@ -17,13 +17,19 @@ SOURCES += main.cpp\
     galscene.cpp \
     galtextboard.cpp \
     galstatus.cpp \
-    galbgm.cpp
+    galbgm.cpp \
+    galbottombar.cpp \
+    galdatamanager.cpp \
+    galscenepainter.cpp
 
 HEADERS  += widget.h \
     galscene.h \
     galtextboard.h \
     galstatus.h \
-    galbgm.h
+    galbgm.h \
+    galbottombar.h \
+    galdatamanager.h \
+    galscenepainter.h
 
 FORMS    += widget.ui
 

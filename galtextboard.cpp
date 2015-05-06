@@ -11,6 +11,7 @@ GALTextBoard::GALTextBoard()
     str = "";
     name = "";
     pos = 0;
+    board = QImage("./res/gal/image/icon/textboard.png");
 }
 
 GALTextBoard::~GALTextBoard()
@@ -19,7 +20,7 @@ GALTextBoard::~GALTextBoard()
 }
 
 void GALTextBoard::paint(QPainter &painter) {
-    painter.drawImage(0,560,QImage("./res/gal/image/icon/textboard.png"));
+    painter.drawImage(0,560,board);
     if (name != "")
         painter.drawText(QRect(nameLeft, nameTop, width, height), "【"+name+"】");
     painter.drawText(QRect(left, top-(name=="")*20, width, height), str.left(pos++));
@@ -31,6 +32,7 @@ void GALTextBoard::changeStr(QString str, QString name) {
     this->str = str;
     this->name = name;
     pos = 0;
+    log.push_back(str);
 }
 
 bool GALTextBoard::doneDisplay() {
