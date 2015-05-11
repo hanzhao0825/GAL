@@ -16,9 +16,11 @@ GALScene::~GALScene() {
 void GALScene::paint(QPainter& painter) {
     painter.setFont(QFont("default", 23, -1, false));
     painter.setPen(QColor(255,255,255));
-    galScenePainter.paint(painter, 0, 0, 1, galStatus, charImg, scene);
-    galTextBoard.paint(painter);
-    galBottomBar.paint(painter);
+    galScenePainter.paint(painter, galSceneShaker.curX, galSceneShaker.curY, 1, galStatus, charImg, scene);
+    if (state != "CG") {
+        galTextBoard.paint(painter);
+        galBottomBar.paint(painter);
+    }
     if (state == "LOAD" || state == "SAVE")
         galDataManager.paint(painter);
     if (state == "SELECT")
@@ -29,6 +31,10 @@ void GALScene::mousePress(QMouseEvent *e) {
 //    qDebug() << "mousePress";
     if (MUSTWAIT) return;
     if (state == "GALSCENE") {
+        if (e->button() == Qt::RightButton) {
+            state = "CG";
+            return;
+        }
         if (galBottomBar.focus != -1) {
             switch (galBottomBar.focus) {
                 case 0:
@@ -41,6 +47,8 @@ void GALScene::mousePress(QMouseEvent *e) {
                     galDataManager.status = "SAVE";
                     galDataManager.refresh();
                     break;
+                case 2:
+                    galSkipper.skip = !galSkipper.skip;
             }
             return;
         }
@@ -66,6 +74,8 @@ void GALScene::mousePress(QMouseEvent *e) {
         if (galSelect.focus == -1) return;
         state = "GALSCENE";
         jumpToScript(galSelect.fname[galSelect.focus]);
+    } else if (state == "CG") {
+        state = "GALSCENE";
     }
 }
 
@@ -78,7 +88,6 @@ void GALScene::mouseMove(QMouseEvent *e) {
 void GALScene::jumpToScript(QString fname) {
     galStatus.fname = fname;
     galStatus.lineNum = 0;
-//    galStatus.curChar.clear();
     file.close();
     file.setFileName(curPath+"/res/gal/script/"+fname+".txt");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -116,20 +125,25 @@ QStringList GALScene::getAnotherLine() {
 void GALScene::nextActions() {
     while (1) {
         QStringList strList = getAnotherLine();
-//        qDebug() << strList;
+        if (galStatus.lineNum > galSkipper.lines[galStatus.fname]) {
+            galSkipper.skip = false;
+            galSkipper.lines[galStatus.fname] = galStatus.lineNum;
+            galSkipper.save();
+        }
         galStatus.lineNum ++;
         if (strList[0] == "TEXT") {
-            galStatus.lastWords = strList[2];
             if (strList[1] == "X") {
                 QString qs = "";
                 for (int i = 2; i < strList.length(); i ++)
                     qs += strList[i]+" ";
                 galTextBoard.changeStr(qs, "");
+                galStatus.lastWords = qs;
             } else  {
                 QString qs = "";
                 for (int i = 3; i < strList.length(); i ++)
                     qs += strList[i]+" ";
                 galTextBoard.changeStr(qs, strList[1]);
+                galStatus.lastWords = qs;
                 if (strList[2] != "X") {
                     delete voice;
                     voice = new QSound("./res/GAL/voice/"+galStatus.fname+"/"+strList[3]+".wav");
@@ -142,11 +156,24 @@ void GALScene::nextActions() {
             scene = QImage("./res/gal/image/scene/"+strList[1]+".png");
         } else if (strList[0] == "CHAR") {
             if (strList[1] == "SHOW") {
-                galStatus.curChar[strList[2]] = pair<QString, int>(strList[3], charPos[strList[4]]);
-                charImg[strList[2]] = QImage("./res/gal/image/character/"+strList[2]+"_"+strList[3]+".png");
-            }
-            if (strList[1] == "REMOVE") {
+                int pos = charPos[strList[3]];
+                map<QString, QString> args = galStatus.curChar[strList[2]].first;
+                for (int i = 4; i < strList.size(); i ++) {
+                    QStringList argsList = strList[i].split("=");
+                    args[argsList[0]] = argsList[1];
+                }
+                galStatus.curChar[strList[2]] = make_pair(args, pos);
+                charImg[strList[2]] = QImage(NULL);
+            } else if (strList[1] == "REMOVE") {
                 galStatus.curChar.erase(strList[2]);
+            } else if (strList[1] == "JUMP") {
+                galStatus.galCharAnimator.duration[strList[2]] = strList[5].split("=")[1].toInt();
+                galStatus.galCharAnimator.curDuration[strList[2]] = strList[5].split("=")[1].toInt();
+                galStatus.galCharAnimator.type[strList[2]] = strList[1];
+                galStatus.galCharAnimator.jumpLevel[strList[2]] = strList[3].split("=")[1].toInt();
+                galStatus.galCharAnimator.jumpTimes[strList[2]] = strList[4].split("=")[1].toInt();
+            } else if (strList[1] == "SCALE") {
+                galStatus.galCharAnimator.charScale[strList[2]] = strList[3].toDouble();
             }
         } else if (strList[0] == "BGM") {
             if (strList[1] == "START") {
@@ -165,7 +192,12 @@ void GALScene::nextActions() {
             for (int i = 2+cs+cs; i < 2 + cs+cs+cs; i ++) v.push_back(strList[i].toInt());
             galSelect.change(cs, t, f, v);
             state = "SELECT";
+            galSkipper.skip = false;
             break;
+        } else if (strList[0] == "SCENESHAKE") {
+            galSceneShaker.maxX = strList[1].split("=")[1].toInt();
+            galSceneShaker.maxY = strList[2].split("=")[1].toInt();
+            galSceneShaker.duration = strList[3].split("=")[1].toInt();
         }
     }
 }
@@ -204,3 +236,12 @@ void GALScene::loadFrom(QString fname) {
     jumpToScript(galStatus.fname, galStatus.lineNum);
 }
 
+void GALScene::update() {
+    if (galSkipper.skip) {
+        nextActions();
+    }
+    if (galSceneShaker.duration > 0) {
+        galSceneShaker.update(MUSTWAIT);
+    }
+    galStatus.update();
+}

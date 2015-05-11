@@ -38,10 +38,13 @@ void GALDataManager::paint(QPainter &painter) {
 
 void GALDataManager::refresh() {
     focus = -1;
+
+
     for (int i = 0; i < 6; i ++){
         galStatus[i].clear();
         charImg[i].clear();
         scene[i] = QImage(NULL);
         galStatus[i].loadFrom("./data/"+QString::number(i, 10));
     }
+
 }

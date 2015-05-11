@@ -21,7 +21,10 @@ SOURCES += main.cpp\
     galbottombar.cpp \
     galdatamanager.cpp \
     galscenepainter.cpp \
-    galselect.cpp
+    galselect.cpp \
+    galskipper.cpp \
+    galsceneshaker.cpp \
+    galcharanimator.cpp
 
 HEADERS  += widget.h \
     galscene.h \
@@ -31,7 +34,10 @@ HEADERS  += widget.h \
     galbottombar.h \
     galdatamanager.h \
     galscenepainter.h \
-    galselect.h
+    galselect.h \
+    galskipper.h \
+    galsceneshaker.h \
+    galcharanimator.h
 
 FORMS    += widget.ui
 

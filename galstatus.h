@@ -8,6 +8,8 @@
 #include <vector>
 #include <QFile>
 #include <QDateTime>
+#include "galcharanimator.h"
+
 using namespace std;
 class GALStatus
 {
@@ -17,14 +19,17 @@ public:
     void clear();
     void saveTo(QString fname);
     void loadFrom(QString fname);
+    void update();
 
-    map<QString, pair<QString, int> > curChar; //name, <gesture, pos>
+    GALCharAnimator galCharAnimator;
+    QString fname;
+    map<QString, pair<map<QString, QString>, int> > curChar; //name, <gesture, position>
     QString curScene;
     QString curBGM;
-    QString fname;
     QString curDate;
     int lineNum;
     QString lastWords;
+    map<QString, int> jump;
 };
 
 #endif // GALSTATUS_H

@@ -3,6 +3,7 @@
 GALBottomBar::GALBottomBar()
 {
     focus = -1;
+
     left = 787;
     width[0] = 40;
     width[1] = 40;

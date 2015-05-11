@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <QImage>
+#include <QTime>
 #include <map>
 #include "galstatus.h"
 #include "galscenepainter.h"

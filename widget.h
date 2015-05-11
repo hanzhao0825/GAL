@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QMouseEvent>
 #include <QKeyEvent>
+#include <QDebug>
 #include "galscene.h"
 namespace Ui {
 class Widget;

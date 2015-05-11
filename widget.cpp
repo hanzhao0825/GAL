@@ -25,6 +25,7 @@ Widget::~Widget()
 void Widget::animate()
 {
     elapsed = (elapsed + qobject_cast<QTimer*>(sender())->interval()) % 1000;
+    galScene.update();
     update();
 }
 

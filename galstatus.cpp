@@ -17,18 +17,27 @@ void GALStatus::saveTo(QString fname) {
     QFile f(fname);
     f.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream fout(&f);
+    QDateTime current_date_time = QDateTime::currentDateTime();
+    curDate = current_date_time.toString("yyyy-MM-dd hh:mm:ss ddd");
+    fout << curDate << endl;
+    fout << lastWords << endl;
     fout << curChar.size() << endl;
     for (auto it = curChar.begin(); it != curChar.end(); ++ it) {
-        fout << it->first << " " << it->second.first << " " << it->second.second;
+        fout << it->first << " " << it->second.second << endl;
+        map<QString, QString> &args = it->second.first;
+        fout << args.size() << endl;
+        for (auto it2 = args.begin(); it2 != args.end(); ++ it2) {
+            fout << it2->first << " " << it2->second << endl;
+        }
     }
     fout << curScene << endl;
     fout << curBGM << endl;
     fout << this->fname << endl;
     fout << lineNum << endl;
-    QDateTime current_date_time = QDateTime::currentDateTime();
-    curDate = current_date_time.toString("yyyy-MM-dd hh:mm:ss ddd");
-    fout << curDate << endl;
-    fout << lastWords << endl;
+    fout << galCharAnimator.charScale.size() << endl;
+    for (auto it = galCharAnimator.charScale.begin(); it != galCharAnimator.charScale.end(); ++ it) {
+        fout << it->first << " " << it->second << endl;
+    }
     f.close();
 }
 
@@ -40,27 +49,41 @@ void GALStatus::loadFrom(QString fname) {
         return;
     }
     QTextStream fin(&f);
-    QString lineStr;
+    curDate = fin.readLine();
+    lastWords = fin.readLine();
     int mapSize;
     fin >> mapSize;
     curChar.clear();
     for (int i = 0; i < mapSize; ++ i) {
-        QString s1, s2;
+        QString s1;
         int i3;
-        fin >> s1 >> s2 >> i3;
-        curChar[s1] = make_pair(s2, i3);
+        fin >> s1 >> i3;
+        int argsSize;
+        fin >> argsSize;
+        map<QString, QString> args;
+        for (int j = 0; j < argsSize; ++ j) {
+            QString q1, q2;
+            fin >> q1 >> q2;
+            args[q1] = q2;
+        }
+        curChar[s1] = make_pair(args, i3);
     }
     fin >> curScene;
     fin >> curBGM;
     fin >> this->fname;
     fin >> lineNum;
-    curDate = fin.readLine();
-    curDate = fin.readLine();
-    fin >> lastWords;
+    fin >> mapSize;
+    galCharAnimator.charScale.clear();
+    for (int i = 0; i < mapSize; ++ i) {
+        QString s1;
+        double i3;
+        fin >> s1 >> i3;
+        galCharAnimator.charScale[s1] = i3;
+    }
     f.close();
 }
 
-void GALStatus::clear(){
+void GALStatus::clear() {
     int lineNum;
     curBGM = "";
     curChar.clear();
@@ -68,4 +91,8 @@ void GALStatus::clear(){
     curScene = "";
     fname = "";
     lineNum = 0;
+}
+
+void GALStatus::update() {
+    galCharAnimator.update();
 }

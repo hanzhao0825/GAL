@@ -18,6 +18,8 @@
 #include "galdatamanager.h"
 #include "galscenepainter.h"
 #include "galselect.h"
+#include "galskipper.h"
+#include "galsceneshaker.h"
 
 using namespace std;
 class GALScene
@@ -31,6 +33,7 @@ public:
     void keyPress(QKeyEvent *e);
     void jumpToScript(QString fname);
     void jumpToScript(QString fname, int lineNum);
+    void update();
 
 private:
     GALStatus galStatus;
@@ -40,6 +43,8 @@ private:
     GALDataManager galDataManager;
     GALScenePainter galScenePainter;
     GALSelect galSelect;
+    GALSkipper galSkipper;
+    GALSceneShaker galSceneShaker;
 
     map<QString, int> charPos;
     map<QString, QImage> charImg;
