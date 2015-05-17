@@ -4,6 +4,7 @@
 #include <QString>
 #include <QFile>
 #include <QDebug>
+#include <QDir>
 #include <map>
 #include <cmath>
 using namespace std;

@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <QImage>
+#include <QDir>
 
 class GALBottomBar
 {

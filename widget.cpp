@@ -11,10 +11,10 @@ Widget::Widget(QWidget *parent) :
     setAutoFillBackground(false);
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
-    timer->start(16);
+    timer->start(25);
     elapsed = 0;
     setMouseTracking(true);
-    galScene.jumpToScript("0.0.0");
+    galScene.jumpToScript("DEMO");
 }
 
 Widget::~Widget()
@@ -41,7 +41,7 @@ void Widget::paintEvent(QPaintEvent *event)
 
 void Widget::mousePressEvent(QMouseEvent *e)
 {
-   galScene.mousePress(e);
+    galScene.mousePress(e);
 }
 
 void Widget::mouseMoveEvent(QMouseEvent *e)

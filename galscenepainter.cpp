@@ -10,12 +10,12 @@ GALScenePainter::~GALScenePainter()
 
 }
 
-void GALScenePainter::paint(QPainter &painter, int left, int top, double scale, GALStatus &galStatus, map<QString, QImage> &charImg, QImage &scene) {
+void GALScenePainter::paint(QPainter &painter, int left, int top, double scale, GALStatus &galStatus, map<QString, QImage> &charImg, QImage &scene, QImage &mask) {
     QImage tImg(QSize(1080*scale, 720*scale), QImage::Format_ARGB32);
     tImg.fill(0x00000000);
     QPainter tPainter(&tImg);
     if (scene == QImage(NULL)) {
-        scene = QImage("./res/gal/image/scene/"+galStatus.curScene+".png");
+        scene = QImage(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/scene/"+galStatus.curScene+".png"));
     }
     tPainter.drawImage(QRectF(0, 0, 1080*scale, 720*scale), scene);
     for (auto it = galStatus.curChar.begin(); it != galStatus.curChar.end(); ++it) {
@@ -23,10 +23,10 @@ void GALScenePainter::paint(QPainter &painter, int left, int top, double scale, 
             QImage cImg = QImage(QSize(1240, 1754), QImage::Format_ARGB32);
             cImg.fill(0x00000000);
             QPainter charPainter(&cImg);
-            charPainter.drawImage(0, 0, QImage("./res/gal/image/character/"+it->first+"/"+it->first+".png"));
+            charPainter.drawImage(0, 0, QImage(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/character/"+it->first+"/"+it->first+".png")));
             for (auto it2 = it->second.first.begin(); it2 != it->second.first.end(); ++ it2) {
                 if (it2->second == "X") continue;
-                charPainter.drawImage(0, 0, QImage("./res/gal/image/character/"+it->first+"/"+it2->first+"/"+it2->second+".png"));
+                charPainter.drawImage(0, 0, QImage(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/character/"+it->first+"/"+it2->first+"/"+it2->second+".png")));
             }
             charImg[it->first] = cImg;
         }
@@ -37,6 +37,12 @@ void GALScenePainter::paint(QPainter &painter, int left, int top, double scale, 
         int charTop = (galStatus.galCharAnimator.charBase[it->first]-galStatus.galCharAnimator.curY[it->first]-charScaleD)*scale ;
 
         tPainter.drawImage(QRectF(charLeft, charTop, img.width()*scale*charScale, img.height()*scale*charScale), img);
+    }
+    if (galStatus.curMask != "" && galStatus.curMask != "X") {
+        if (mask == QImage(NULL)) {
+            mask = QImage(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/mask/"+galStatus.curMask+".png"));
+        }
+        tPainter.drawImage(QRectF(0, 0, 1080*scale, 720*scale), mask);
     }
     painter.drawImage(QRectF(left, top, 1080*scale, 720*scale), tImg);
 

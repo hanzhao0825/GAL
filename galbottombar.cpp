@@ -29,10 +29,10 @@ GALBottomBar::GALBottomBar()
     func[3] = "log";
     func[4] = "system";
 
-    board = QImage("./res/gal/image/icon/bottombar.png");
+    board = QImage(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/icon/bottombar.png"));
     for (int i = 0; i < 5; i ++) {
-        img[i] = QImage(QString("./res/gal/image/icon/bottombar_img_")+func[i]+".png");
-        img_hl[i] = QImage(QString("./res/gal/image/icon/bottombar_img_")+func[i]+"_hl.png");
+        img[i] = QImage(QString(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/icon/bottombar_img_")+func[i]+".png"));
+        img_hl[i] = QImage(QString(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/icon/bottombar_img_")+func[i]+"_hl.png"));
     }
 }
 

@@ -8,10 +8,8 @@ GALTextBoard::GALTextBoard()
     height = 200;
     nameLeft = 100;
     nameTop = 600;
-    str = "";
-    name = "";
-    pos = 0;
-    board = QImage("./res/gal/image/icon/textboard.png");
+    board = QImage(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/icon/textboard.png"));
+    init();
 }
 
 GALTextBoard::~GALTextBoard()
@@ -19,11 +17,19 @@ GALTextBoard::~GALTextBoard()
 
 }
 
-void GALTextBoard::paint(QPainter &painter) {
+void GALTextBoard::init() {
+    str = "";
+    name = "";
+    pos = 0;
+    timeDuration = 1;
+}
+
+void GALTextBoard::paint(QPainter &painter, bool skip) {
     painter.drawImage(0,560,board);
     if (name != "")
         painter.drawText(QRect(nameLeft, nameTop, width, height), "【"+name+"】");
-    painter.drawText(QRect(left, top-(name=="")*20, width, height), str.left(pos++));
+    painter.drawText(QRect(left, top-(name=="")*20, width, height), skip == false ? str.left(pos) : str);
+    pos += (timeCnt%timeDuration == 0) ? 1 : 0;
     if (pos > str.size())
         pos = str.size();
 }
@@ -41,4 +47,12 @@ bool GALTextBoard::doneDisplay() {
 
 void GALTextBoard::showAll() {
     pos = str.size();
+}
+
+void GALTextBoard::update() {
+    timeCnt ++;
+}
+
+void GALTextBoard::setDuration(int d) {
+    timeDuration = d;
 }

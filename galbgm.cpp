@@ -15,6 +15,6 @@ void GALBGM::play(QString bgmName) {
     playlist.addMedia(QUrl::fromLocalFile(bgmName));
     playlist.setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
     bgm.setPlaylist(&playlist);
-    bgm.setVolume(25);
+    bgm.setVolume(100);
     bgm.play();
 }

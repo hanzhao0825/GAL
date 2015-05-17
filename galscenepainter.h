@@ -11,7 +11,7 @@ class GALScenePainter
 public:
     GALScenePainter();
     ~GALScenePainter();
-    void paint(QPainter &painter, int left, int top, double scale, GALStatus &galStatus, map<QString, QImage> &charImg, QImage &scene);
+    void paint(QPainter &painter, int left, int top, double scale, GALStatus &galStatus, map<QString, QImage> &charImg, QImage &scene, QImage &mask);
 };
 
 #endif // GALSCENEPAINTER_H

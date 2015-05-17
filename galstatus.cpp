@@ -2,8 +2,7 @@
 
 GALStatus::GALStatus()
 {
-    fname = "";
-    curDate = "";
+    init();
 }
 
 GALStatus::~GALStatus()
@@ -11,9 +10,18 @@ GALStatus::~GALStatus()
 
 }
 
+void GALStatus::init() {
+    fname = "";
+    curDate = "";
+    curScene = "";
+    curMask = "X";
+    lineNum = 0;
+    charImg.clear();
+    scene = QImage(NULL);
+    mask = QImage(NULL);
+}
 
 void GALStatus::saveTo(QString fname) {
-//    qDebug() << "Saving To " << fname;
     QFile f(fname);
     f.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream fout(&f);
@@ -31,6 +39,7 @@ void GALStatus::saveTo(QString fname) {
         }
     }
     fout << curScene << endl;
+    fout << curMask << endl;
     fout << curBGM << endl;
     fout << this->fname << endl;
     fout << lineNum << endl;
@@ -42,10 +51,9 @@ void GALStatus::saveTo(QString fname) {
 }
 
 void GALStatus::loadFrom(QString fname) {
-//    qDebug() << "Loading from " << fname;
     QFile f(fname);
     if (! f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Cannot open file";
+        qDebug() << "GALStatus::loadFrom - Cannot open file";
         return;
     }
     QTextStream fin(&f);
@@ -69,6 +77,7 @@ void GALStatus::loadFrom(QString fname) {
         curChar[s1] = make_pair(args, i3);
     }
     fin >> curScene;
+    fin >> curMask;
     fin >> curBGM;
     fin >> this->fname;
     fin >> lineNum;

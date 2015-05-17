@@ -47,8 +47,6 @@ private:
     GALSceneShaker galSceneShaker;
 
     map<QString, int> charPos;
-    map<QString, QImage> charImg;
-    QImage scene;
     QFile file;
     QStringList getAnotherLine();
     bool MUSTWAIT;

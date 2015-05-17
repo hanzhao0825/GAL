@@ -3,6 +3,7 @@
 
 #include <QFile>
 #include <QDebug>
+#include <QDir>
 #include <map>
 using namespace std;
 class GALSkipper

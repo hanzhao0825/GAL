@@ -16,6 +16,7 @@ class GALStatus
 public:
     GALStatus();
     ~GALStatus();
+    void init();
     void clear();
     void saveTo(QString fname);
     void loadFrom(QString fname);
@@ -24,12 +25,15 @@ public:
     GALCharAnimator galCharAnimator;
     QString fname;
     map<QString, pair<map<QString, QString>, int> > curChar; //name, <gesture, position>
-    QString curScene;
+    QString curScene, curMask;
     QString curBGM;
     QString curDate;
     int lineNum;
     QString lastWords;
     map<QString, int> jump;
+
+    map<QString, QImage> charImg;
+    QImage scene, mask;
 };
 
 #endif // GALSTATUS_H

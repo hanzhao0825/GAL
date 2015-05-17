@@ -16,8 +16,6 @@ public:
     GALDataManager();
     ~GALDataManager();
     GALStatus galStatus[10];
-    map<QString, QImage> charImg[10];
-    QImage scene[10];
     void refresh();
     void mouseMove(QMouseEvent *e);
     void paint(QPainter &painter);

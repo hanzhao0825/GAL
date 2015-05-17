@@ -3,6 +3,7 @@
 
 #include <QPainter>
 #include <QDebug>
+#include <QDir>
 #include <vector>
 using namespace std;
 class GALTextBoard
@@ -10,10 +11,13 @@ class GALTextBoard
 public:
     GALTextBoard();
     ~GALTextBoard();
-    void paint(QPainter &painter);
+    void paint(QPainter &painter, bool skip);
+    void update();
     void changeStr(QString str, QString name);
     bool doneDisplay();
     void showAll();
+    void setDuration(int d);
+    void init();
     vector<QString> log;
 
 private:
@@ -22,6 +26,7 @@ private:
     QString str, name;
     int pos;
     QImage board;
+    int timeCnt, timeDuration;
 };
 
 #endif // GALTEXTBOARD_H
