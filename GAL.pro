@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     galselect.cpp \
     galskipper.cpp \
     galsceneshaker.cpp \
-    galcharanimator.cpp
+    galcharanimator.cpp \
+    galscenechanger.cpp
 
 HEADERS  += widget.h \
     galscene.h \
@@ -37,7 +38,8 @@ HEADERS  += widget.h \
     galselect.h \
     galskipper.h \
     galsceneshaker.h \
-    galcharanimator.h
+    galcharanimator.h \
+    galscenechanger.h
 
 FORMS    += widget.ui
 

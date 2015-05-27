@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QDateTime>
 #include "galcharanimator.h"
+#include "galscenechanger.h"
 
 using namespace std;
 class GALStatus
@@ -17,15 +18,15 @@ public:
     GALStatus();
     ~GALStatus();
     void init();
-    void clear();
     void saveTo(QString fname);
     void loadFrom(QString fname);
     void update();
 
     GALCharAnimator galCharAnimator;
+    GALSceneChanger galSceneChanger;
     QString fname;
     map<QString, pair<map<QString, QString>, int> > curChar; //name, <gesture, position>
-    QString curScene, curMask;
+    QString curScene, curMask, curChanger;
     QString curBGM;
     QString curDate;
     int lineNum;
@@ -33,7 +34,9 @@ public:
     map<QString, int> jump;
 
     map<QString, QImage> charImg;
-    QImage scene, mask;
+    QImage scene, mask, changer;
+
+    QString nextScene;
 };
 
 #endif // GALSTATUS_H

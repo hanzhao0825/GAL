@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <QImage>
+#include <QDir>
 #include <vector>
 using namespace std;
 
@@ -22,6 +23,7 @@ public:
     int choiceSum;
     vector<QString> text, fname;
     vector<int> valid;
+    QImage back;
 };
 
 #endif // GALSELECT_H

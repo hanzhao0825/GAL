@@ -2,8 +2,8 @@
 #include "ui_widget.h"
 #include <QPainter>
 #include <QTimer>
-Widget::Widget(QWidget *parent) :
-    QWidget(parent),
+Widget::Widget() :
+    QOpenGLWidget(),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
@@ -11,7 +11,7 @@ Widget::Widget(QWidget *parent) :
     setAutoFillBackground(false);
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
-    timer->start(25);
+    timer->start(10);
     elapsed = 0;
     setMouseTracking(true);
     galScene.jumpToScript("DEMO");
@@ -25,6 +25,7 @@ Widget::~Widget()
 void Widget::animate()
 {
     elapsed = (elapsed + qobject_cast<QTimer*>(sender())->interval()) % 1000;
+    qDebug() << elapsed;
     galScene.update();
     update();
 }

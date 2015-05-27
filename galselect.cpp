@@ -1,7 +1,7 @@
 #include "galselect.h"
 
 GALSelect::GALSelect() {
-
+    back = QImage(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/icon/select.png"));
 }
 
 
@@ -23,6 +23,7 @@ void GALSelect::change(int cs, vector<QString> &t, vector<QString> &f, vector<in
 void GALSelect::paint(QPainter &painter) {
      for (int i = 0; i < choiceSum; i ++) {
          int y = 200 + i * 100;
+         painter.drawImage(240, y-35, back);
          if (focus == i) {
              painter.setPen(QColor(255,255,155));
              painter.drawText(0, y, 1080, 100, Qt::AlignHCenter, text[i]);

@@ -12,6 +12,7 @@ public:
     GALBGM();
     ~GALBGM();
     void play(QString bgm);
+    void stop();
 
     QMediaPlayer bgm;
     QMediaPlaylist playlist;

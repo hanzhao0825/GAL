@@ -1,7 +1,7 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include <QWidget>
+#include <QOpenGLWidget>
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QDebug>
@@ -10,12 +10,12 @@ namespace Ui {
 class Widget;
 }
 
-class Widget : public QWidget
+class Widget : public QOpenGLWidget
 {
     Q_OBJECT
 
 public:
-    explicit Widget(QWidget *parent = 0);
+    Widget();
     ~Widget();
 
 private:

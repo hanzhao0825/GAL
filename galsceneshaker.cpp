@@ -6,6 +6,8 @@ GALSceneShaker::GALSceneShaker()
     time = QTime::currentTime();
     qsrand(time.msec()+time.second()*1000);
     duration = 0;
+    curX = 0;
+    curY = 0;
 }
 
 GALSceneShaker::~GALSceneShaker()

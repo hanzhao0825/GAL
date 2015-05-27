@@ -25,7 +25,7 @@ void GALDataManager::paint(QPainter &painter) {
             painter.drawRect(35+540*((i>2)), 150 * (i%3)+100, 470, 108);
         }
         if (galStatus[i].curDate != "") {
-            galScenePainter.paint(painter, 70+540*((i>2)), 150 * (i%3)+100, 0.15, galStatus[i], galStatus[i].charImg, galStatus[i].scene, galStatus[i].mask);
+            galScenePainter.paint(painter, 70+540*((i>2)), 150 * (i%3)+100, 0.15, galStatus[i]);
             painter.drawText(QRect(270+540*((i>2)), 150 * (i%3)+120, 200, 100), galStatus[i].curDate);
             painter.drawText(QRect(270+540*((i>2)), 150 * (i%3)+140, 200, 100), "Chapter " + galStatus[i].fname);
             painter.drawText(QRect(270+540*((i>2)), 150 * (i%3)+160, 200, 100), galStatus[i].lastWords.length() > 20 ? galStatus[i].lastWords.left(20) + "..." :galStatus[i].lastWords );
@@ -41,7 +41,7 @@ void GALDataManager::refresh() {
 
 
     for (int i = 0; i < 6; i ++){
-        galStatus[i].clear();
+        galStatus[i].init();
         galStatus[i].charImg.clear();
         galStatus[i].scene = QImage(NULL);
         galStatus[i].loadFrom(QDir::toNativeSeparators(QDir::currentPath()+"/data/"+QString::number(i, 10)));

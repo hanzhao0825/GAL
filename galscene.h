@@ -32,7 +32,7 @@ public:
     void mouseMove(QMouseEvent *e);
     void keyPress(QKeyEvent *e);
     void jumpToScript(QString fname);
-    void jumpToScript(QString fname, int lineNum);
+    void loadFrom(QString fname, int lineNum);
     void update();
 
 private:
@@ -53,8 +53,6 @@ private:
     void nextActions();
     QSound *voice;
     QString curPath;
-    void saveTo(QString fname);
-    void loadFrom(QString fname);
 
     QString state;
 

@@ -12,13 +12,17 @@ GALStatus::~GALStatus()
 
 void GALStatus::init() {
     fname = "";
+    lineNum = 0;
     curDate = "";
     curScene = "";
-    curMask = "X";
-    lineNum = 0;
-    charImg.clear();
     scene = QImage(NULL);
+    curChar.clear();
+    charImg.clear();
+    curBGM = "";
+    curMask = "X";
     mask = QImage(NULL);
+    curChanger = "X";
+    changer = QImage(NULL);
 }
 
 void GALStatus::saveTo(QString fname) {
@@ -92,16 +96,7 @@ void GALStatus::loadFrom(QString fname) {
     f.close();
 }
 
-void GALStatus::clear() {
-    int lineNum;
-    curBGM = "";
-    curChar.clear();
-    curDate = "";
-    curScene = "";
-    fname = "";
-    lineNum = 0;
-}
-
 void GALStatus::update() {
     galCharAnimator.update();
+    galSceneChanger.update();
 }
