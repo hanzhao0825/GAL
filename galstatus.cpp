@@ -15,14 +15,15 @@ void GALStatus::init() {
     lineNum = 0;
     curDate = "";
     curScene = "";
-    scene = QImage(NULL);
+    scene = QPixmap(0, 0);
     curChar.clear();
     charImg.clear();
+    charPos.clear();
     curBGM = "";
     curMask = "X";
-    mask = QImage(NULL);
+    mask = QPixmap(0, 0);
     curChanger = "X";
-    changer = QImage(NULL);
+    changer = QPixmap(0, 0);
 }
 
 void GALStatus::saveTo(QString fname) {
@@ -51,10 +52,24 @@ void GALStatus::saveTo(QString fname) {
     for (auto it = galCharAnimator.charScale.begin(); it != galCharAnimator.charScale.end(); ++ it) {
         fout << it->first << " " << it->second << endl;
     }
+    int cnt = 0;
+    for (auto it = charImg.begin(); it != charImg.end(); ++ it) {
+        if (it->second.size() != 0) {
+            cnt ++;
+        }
+    }
+    fout << cnt << endl;
+    for (auto it = charImg.begin(); it != charImg.end(); ++ it) {
+        if (it->second.size() != 0) {
+            fout << it->first << endl;
+        }
+    }
     f.close();
+    cap = scene.scaled(162, 108);
+    cap.save(QDir::toNativeSeparators(fname+".png"));
 }
 
-void GALStatus::loadFrom(QString fname) {
+void GALStatus::loadFrom(QString fname, GALCharLoaderManager *galCharloaderManager) {
     QFile f(fname);
     if (! f.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "GALStatus::loadFrom - Cannot open file";
@@ -93,7 +108,14 @@ void GALStatus::loadFrom(QString fname) {
         fin >> s1 >> i3;
         galCharAnimator.charScale[s1] = i3;
     }
+    fin >> mapSize;
+    for (int i = 0; i < mapSize; ++ i) {
+        QString s1;
+        fin >> s1;
+        if (galCharloaderManager != NULL) (*galCharloaderManager).load(s1, &charImg[s1], &charPos[s1]);
+    }
     f.close();
+    cap.load(fname+".png");
 }
 
 void GALStatus::update() {

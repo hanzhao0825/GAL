@@ -2,7 +2,7 @@
 
 GALCharAnimator::GALCharAnimator()
 {
-    QFile f(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/others/charBase"));
+    QFile f(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/res/gal/others/charBase"));
     if (! f.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "GALCharAnimator::GALCharAnimator() - Cannot open file";
         return;

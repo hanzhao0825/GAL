@@ -3,6 +3,7 @@
 
 #include <QPainter>
 #include <QDebug>
+#include <QApplication>
 #include <QDir>
 #include <vector>
 using namespace std;
@@ -25,7 +26,7 @@ private:
     int nameLeft, nameTop;
     QString str, name;
     int pos;
-    QImage board;
+    QPixmap board;
     int timeCnt, timeDuration;
 };
 

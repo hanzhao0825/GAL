@@ -29,10 +29,10 @@ GALBottomBar::GALBottomBar()
     func[3] = "log";
     func[4] = "system";
 
-    board = QImage(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/icon/bottombar.png"));
+    board = QPixmap(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/res/gal/image/icon/bottombar.png"));
     for (int i = 0; i < 5; i ++) {
-        img[i] = QImage(QString(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/icon/bottombar_img_")+func[i]+".png"));
-        img_hl[i] = QImage(QString(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/icon/bottombar_img_")+func[i]+"_hl.png"));
+        img[i] = QPixmap(QString(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/res/gal/image/icon/bottombar_img_")+func[i]+".png"));
+        img_hl[i] = QPixmap(QString(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/res/gal/image/icon/bottombar_img_")+func[i]+"_hl.png"));
     }
 }
 
@@ -42,12 +42,12 @@ GALBottomBar::~GALBottomBar()
 }
 
 void GALBottomBar::paint(QPainter &painter) {
-     painter.drawImage(0,665,board);
+     painter.drawPixmap(0,665,board);
      for (int i = 0; i < 5; i ++) {
          if (focus == i) {
-             painter.drawImage(pos_x[i], pos_y[i], img_hl[i]);
+             painter.drawPixmap(pos_x[i], pos_y[i], img_hl[i]);
          } else {
-             painter.drawImage(pos_x[i], pos_y[i], img[i]);
+             painter.drawPixmap(pos_x[i], pos_y[i], img[i]);
          }
      }
 }

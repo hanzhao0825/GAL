@@ -25,7 +25,10 @@ SOURCES += main.cpp\
     galskipper.cpp \
     galsceneshaker.cpp \
     galcharanimator.cpp \
-    galscenechanger.cpp
+    galscenechanger.cpp \
+    galcharloader.cpp \
+    galcharloadermanager.cpp \
+    galvoice.cpp
 
 HEADERS  += widget.h \
     galscene.h \
@@ -39,11 +42,13 @@ HEADERS  += widget.h \
     galskipper.h \
     galsceneshaker.h \
     galcharanimator.h \
-    galscenechanger.h
+    galscenechanger.h \
+    galcharloader.h \
+    galcharloadermanager.h \
+    galvoice.h
 
 FORMS    += widget.ui
 
 DISTFILES +=
 
-RESOURCES += \
-    gal.qrc
+RESOURCES +=

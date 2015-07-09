@@ -1,16 +1,14 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include <QOpenGLWidget>
+#include <QWidget>
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QDebug>
 #include "galscene.h"
-namespace Ui {
-class Widget;
-}
 
-class Widget : public QOpenGLWidget
+
+class Widget : public QWidget
 {
     Q_OBJECT
 
@@ -19,7 +17,7 @@ public:
     ~Widget();
 
 private:
-    Ui::Widget *ui;
+
     GALScene galScene;
     int elapsed;
 

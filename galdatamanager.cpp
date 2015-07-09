@@ -24,27 +24,29 @@ void GALDataManager::paint(QPainter &painter) {
         if (i == focus) {
             painter.drawRect(35+540*((i>2)), 150 * (i%3)+100, 470, 108);
         }
+        painter.setOpacity(0.5);
+        painter.drawRect(35+540*((i>2)), 150 * (i%3)+100, 470, 108);
+        painter.setOpacity(1);
         if (galStatus[i].curDate != "") {
-            galScenePainter.paint(painter, 70+540*((i>2)), 150 * (i%3)+100, 0.15, galStatus[i]);
-            painter.drawText(QRect(270+540*((i>2)), 150 * (i%3)+120, 200, 100), galStatus[i].curDate);
-            painter.drawText(QRect(270+540*((i>2)), 150 * (i%3)+140, 200, 100), "Chapter " + galStatus[i].fname);
-            painter.drawText(QRect(270+540*((i>2)), 150 * (i%3)+160, 200, 100), galStatus[i].lastWords.length() > 20 ? galStatus[i].lastWords.left(20) + "..." :galStatus[i].lastWords );
+            painter.drawRect(70+540*((i>2)), 150 * (i%3)+100, 162, 108);
+            painter.drawPixmap(70+540*((i>2)), 150 * (i%3)+100, galStatus[i].cap);
+            painter.drawText(QRect(270+540*((i>2)), 150 * (i%3)+115, 200, 100), galStatus[i].curDate);
+            painter.drawText(QRect(270+540*((i>2)), 150 * (i%3)+135, 200, 100), "Chapter " + galStatus[i].fname);
+            painter.drawText(QRect(270+540*((i>2)), 150 * (i%3)+155, 200, 100), galStatus[i].lastWords.length() > 20 ? galStatus[i].lastWords.left(20) + "..." :galStatus[i].lastWords );
         } else {
             painter.drawRect(70+540*((i>2)), 150 * (i%3)+100, 162, 108);
             painter.drawText(QRect(270+540*((i>2)), 150 * (i%3)+120, 200, 100), "No Data");
+            painter.setOpacity(1);
         }
     }
 }
 
 void GALDataManager::refresh() {
     focus = -1;
-
-
     for (int i = 0; i < 6; i ++){
         galStatus[i].init();
+        galStatus[i].loadFrom(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/data/"+QString::number(i, 10)), 0);
         galStatus[i].charImg.clear();
-        galStatus[i].scene = QImage(NULL);
-        galStatus[i].loadFrom(QDir::toNativeSeparators(QDir::currentPath()+"/data/"+QString::number(i, 10)));
     }
 
 }

@@ -3,7 +3,7 @@
 GALSkipper::GALSkipper()
 {
     skip = false;
-    QFile f(QDir::toNativeSeparators(QDir::currentPath()+"/data/skipper"));
+    QFile f(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/data/skipper"));
     if (! f.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "GALSkipper::GALSkipper - Cannot open file";
         return;
@@ -25,7 +25,7 @@ GALSkipper::~GALSkipper()
 }
 
 void GALSkipper::save() {
-    QFile f(QDir::toNativeSeparators(QDir::currentPath()+"/data/skipper"));
+    QFile f(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/data/skipper"));
     if (! f.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << "GALSkipper::save - Cannot open file";
         return;

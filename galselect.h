@@ -4,7 +4,8 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QDebug>
-#include <QImage>
+#include <QPixmap>
+#include <QApplication>
 #include <QDir>
 #include <vector>
 using namespace std;
@@ -23,7 +24,7 @@ public:
     int choiceSum;
     vector<QString> text, fname;
     vector<int> valid;
-    QImage back;
+    QPixmap back;
 };
 
 #endif // GALSELECT_H

@@ -8,7 +8,8 @@ GALTextBoard::GALTextBoard()
     height = 200;
     nameLeft = 100;
     nameTop = 600;
-    board = QImage(QDir::toNativeSeparators(QDir::currentPath()+"/res/gal/image/icon/textboard.png"));
+    board = QPixmap(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/res/gal/image/icon/textboard.png"));
+
     init();
 }
 
@@ -25,9 +26,9 @@ void GALTextBoard::init() {
 }
 
 void GALTextBoard::paint(QPainter &painter, bool skip) {
-    painter.drawImage(0,560,board);
+    painter.drawPixmap(0,560,board);
     if (name != "")
-        painter.drawText(QRect(nameLeft, nameTop, width, height), "【"+name+"】");
+        painter.drawText(QRect(nameLeft, nameTop, width, height), "["+name+"]");
     painter.drawText(QRect(left, top-(name=="")*20, width, height), skip == false ? str.left(pos) : str);
     pos += (timeCnt%timeDuration == 0) ? 1 : 0;
     if (pos > str.size())

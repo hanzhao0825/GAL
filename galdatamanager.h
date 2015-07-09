@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QDebug>
-#include <QImage>
+#include <QPixmap>
 #include <QTime>
 #include <map>
 #include "galstatus.h"
@@ -20,7 +20,6 @@ public:
     void mouseMove(QMouseEvent *e);
     void paint(QPainter &painter);
     QString status;
-    GALScenePainter galScenePainter;
     int focus;
 };
 

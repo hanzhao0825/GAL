@@ -3,29 +3,34 @@
 #include <QPainter>
 #include <QTimer>
 Widget::Widget() :
-    QOpenGLWidget(),
-    ui(new Ui::Widget)
+    QWidget()
 {
-    ui->setupUi(this);
     setFixedSize(1080, 720);
     setAutoFillBackground(false);
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
-    timer->start(10);
+    timer->start(20);
     elapsed = 0;
     setMouseTracking(true);
+
+
+    QResource::registerResource(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/rcc/char.rcc"));
+    QResource::registerResource(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/rcc/scene.rcc"));
+    QResource::registerResource(QDir::toNativeSeparators(QApplication::applicationDirPath()+"/rcc/bgm.rcc"));
+
     galScene.jumpToScript("DEMO");
+
+
 }
 
 Widget::~Widget()
 {
-    delete ui;
+
 }
 
 void Widget::animate()
 {
     elapsed = (elapsed + qobject_cast<QTimer*>(sender())->interval()) % 1000;
-    qDebug() << elapsed;
     galScene.update();
     update();
 }

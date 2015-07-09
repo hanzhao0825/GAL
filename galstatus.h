@@ -10,6 +10,7 @@
 #include <QDateTime>
 #include "galcharanimator.h"
 #include "galscenechanger.h"
+#include "galcharloadermanager.h"
 
 using namespace std;
 class GALStatus
@@ -19,7 +20,7 @@ public:
     ~GALStatus();
     void init();
     void saveTo(QString fname);
-    void loadFrom(QString fname);
+    void loadFrom(QString fname, GALCharLoaderManager *galCharloaderManager);
     void update();
 
     GALCharAnimator galCharAnimator;
@@ -33,10 +34,14 @@ public:
     QString lastWords;
     map<QString, int> jump;
 
-    map<QString, QImage> charImg;
-    QImage scene, mask, changer;
+    map<QString, map<pair<QString, QString>, QPixmap> > charImg;
+    map<QString, map<pair<QString, QString>, pair<int, int> > > charPos;
+    QPixmap scene, mask, changer;
+
+    QPixmap cap;
 
     QString nextScene;
+
 };
 
 #endif // GALSTATUS_H
